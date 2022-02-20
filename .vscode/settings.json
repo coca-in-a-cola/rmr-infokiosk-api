@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "rmr-ik-api-vscode",
+            "database": "${workspaceFolder:rmr-infokiosk-api}/db/menus.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

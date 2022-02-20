@@ -1,13 +1,16 @@
+import os
 from http import HTTPStatus
 from flask import Blueprint
 from flask import jsonify
 from api.model.news import NewsModel
 from api.schema.news import NewsEntrySchema
+from definitions import ROOT_DIR
 
 news_api = Blueprint('api', __name__)
 
 # в целях оптимизации модель создаётся один раз
-news_model = NewsModel()
+# считаем, что pdf-файлы новостей содержатся в папке "/upload/news" проекта
+news_model = NewsModel(os.path.join(ROOT_DIR, 'upload', 'news'), "/upload/news")
 
 @news_api.route('/api/news')
 def news():

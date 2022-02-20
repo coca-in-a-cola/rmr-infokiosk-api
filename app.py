@@ -1,11 +1,13 @@
 from flask import Flask
 from api.route.news import news_api
+from api.route.maps import maps_api
 from upload.serve import upload
 
 def create_app():
     app = Flask(__name__)
 
     app.register_blueprint(news_api)
+    app.register_blueprint(maps_api)
     app.register_blueprint(upload)
     
     return app
