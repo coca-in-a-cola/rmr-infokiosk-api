@@ -29,9 +29,9 @@ CREATE TABLE buttons (
 INSERT INTO menus(charCode, location, type, goBack, goBackText)
 VALUES
     ("MAIN",                 "",                     "MAIN",         false,  NULL),
-    ("MAPS",                 "/maps",                "TWO_SIDES",    true,   "Назад"),
-    ("SERVICES",             "/services",            "TWO_SIDES",    true,   "Назад"),
-    ("SERVICES_FINANCE",    "/services/finance",     "TWO_SIDES",   true,   "Назад")
+    ("MAPS",                 "maps",                "TWO_SIDES",    true,   "Назад"),
+    ("SERVICES",             "services",            "TWO_SIDES",    true,   "Назад"),
+    ("SERVICES_FINANCE",    "services/finance",     "TWO_SIDES",   true,   "Назад")
 ;
 
 INSERT INTO buttons(menuCode, sort, text, icon, detail, link, onClick)

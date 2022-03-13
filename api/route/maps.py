@@ -23,4 +23,4 @@ def maps(category):
     if (result):
         return jsonify({"imageList": NewsEntrySchema().dump(result, many=True)})
     else:
-        return HTTPStatus.NOT_FOUND, 404
+        return "maps not found", 404

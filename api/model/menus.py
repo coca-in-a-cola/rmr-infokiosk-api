@@ -28,16 +28,19 @@ class MenusModel:
         self.__menus = {}
 
         for menu_row in rows:
-            menu = self.Menu(dict(zip(columns, menu_row)))
+            menu = self.Menu(**dict(zip(columns, menu_row)))
 
             self.__db_cursor.execute(f"""SELECT * FROM buttons
-                                        WHERE menuCode = {menu.charCode}""")
-            columns = [description[0] for description in self.__db_cursor.description]
+                                        WHERE menuCode = '{menu.charCode}'""")
+            btn_columns = [description[0] for description in self.__db_cursor.description]
 
-            buttons = zip(columns, self.__db_cursor.fetchall())       
-            menu.buttons = list(map(self.Button, buttons))
+            buttons = [self.Button(**dict(zip(btn_columns, button))) for button in (self.__db_cursor.fetchall())]
+            menu.buttons = sorted(buttons, key=lambda button: button.sort)
             self.__menus[menu.location] = menu
 
 
     def get_menu_by_location(self, link):
-        return self.__menus[link]
+        if (link in self.__menus):
+            return self.__menus[link]
+        else:
+            return None

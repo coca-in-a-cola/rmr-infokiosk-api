@@ -18,10 +18,10 @@ def news():
      Выдаёт 10 последних файлов новостей
     ---
     """
-    result = news_model.getTop(10)
+    result = news_model.get_top(10)
 
     result_obj = {"newsList": result}
     if (result):
         return jsonify({"newsList": NewsEntrySchema().dump(result, many=True)})
     else:
-        return HTTPStatus.NOT_FOUND, 404
+        return "news not found", 404
