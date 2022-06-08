@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from flask import Blueprint, send_file, send_from_directory, safe_join, abort
+from flask import Blueprint, send_from_directory, abort
 
 upload = Blueprint('upload', __name__)
 

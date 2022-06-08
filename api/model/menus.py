@@ -24,7 +24,6 @@ class MenusModel:
         self.__db_cursor.execute('SELECT * FROM menus')
         columns = [description[0] for description in self.__db_cursor.description]
         rows = self.__db_cursor.fetchall()
-
         self.__menus = {}
 
         for menu_row in rows:
@@ -36,6 +35,7 @@ class MenusModel:
 
             buttons = [self.Button(**dict(zip(btn_columns, button))) for button in (self.__db_cursor.fetchall())]
             menu.buttons = sorted(buttons, key=lambda button: button.sort)
+
             self.__menus[menu.location] = menu
 
 

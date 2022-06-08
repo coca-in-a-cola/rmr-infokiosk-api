@@ -5,6 +5,7 @@ from flask import jsonify
 from api.model.menus import MenusModel
 from api.schema.menus import MenuSchema
 from definitions import ROOT_DIR
+from flask import current_app
 
 menus_api = Blueprint('menus', __name__)
 
@@ -21,6 +22,11 @@ def menus(link):
     result = menus_model.get_menu_by_location(link)
 
     if (result):
-        return jsonify(MenuSchema().dump(result))
+        dump = MenuSchema().dump(result)
+        if (link =='' and current_app.config['NO_SERVICES']):
+            dump['buttons'][0]['link'] = None
+            dump['buttons'][0]['text'] = None
+            dump['buttons'][0]['icon'] = None
+        return jsonify(dump)
     else:
         return 'menu not found', 404

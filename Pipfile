@@ -8,6 +8,8 @@ flask = "*"
 argparse = "*"
 marshmallow = "*"
 natsort = "*"
+pyjwt = "*"
+waitress = "*"
 
 [dev-packages]
 
