@@ -21,7 +21,7 @@ def create_app():
     return app
 
 if __name__ == '__main__':
-    from argparse import BooleanOptionalAction, ArgumentParser
+    from argparse import ArgumentParser
 
     # app.py -p 3000 запустит приложение с портом 3000
     parser = ArgumentParser()
