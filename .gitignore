@@ -153,3 +153,4 @@ cython_debug/
 
 .vscode
 app_secrets.py
+Pipfile.lock
