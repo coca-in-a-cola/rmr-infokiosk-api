@@ -1,1 +1,0 @@
-web_app_1c_host = 'https://1cweb2r.corp.rmrail.ru:57443/1CWebApp/'
