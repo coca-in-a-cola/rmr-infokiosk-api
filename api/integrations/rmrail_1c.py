@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 from flask import current_app
 
 
-def get_user_by_card_code(code) -> dict:
+def get_user_by_card_code_1C(code) -> dict:
     response = requests.post(
         current_app.config['WEB_APP_1C_HOST'] + '/ws/request.1cws',
         auth=(current_app.config['LOGIN_1C'], current_app.config['PASSWORD_1C']),

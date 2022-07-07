@@ -2,7 +2,7 @@ from flask import current_app, request, jsonify
 from functools import wraps
 import jwt
 from datetime import datetime
-from db.ORMs.models import User
+from api.model.user import User
 from datetime import datetime
 
 # Декторатор проверяет наличие токена, и возвращает декодированное его содержимое

@@ -4,14 +4,14 @@ from api.route.news import news_api
 from api.route.maps import maps_api
 from api.route.menus import menus_api
 from api.route.session import session_api
+from api.route.upload import upload
 from route import spa
-from upload.serve import upload
 from waitress import serve
 import app_secrets
 import app_config
 from itertools import chain
-from db.ORMs.models import db
-
+from api.model.declarative_base import db
+import sys
 
 def create_app():
     app = Flask(__name__)
@@ -61,6 +61,7 @@ if __name__ == '__main__':
     if (args.drop_db):
         @app.before_first_request
         def create_tables():
+            db.drop_all()
             db.create_all()
 
         
