@@ -1,6 +1,6 @@
 import os
 
-from api.model.news import NewsModel
+#from api.model.news import NewsModel
 
 class MapsModel:
 
@@ -9,10 +9,10 @@ class MapsModel:
         # подготовка данных
         dirs = os.listdir(upload_dir)
 
-        models = [NewsModel(os.path.join(upload_dir, dir), \
-                    f'{render_url}/{dir}') for dir in dirs] 
+        #models = [NewsModel(os.path.join(upload_dir, dir), \
+                    #f'{render_url}/{dir}') for dir in dirs] 
 
-        self.__entries = dict(zip(dirs, models))
+        #self.__entries = dict(zip(dirs, models))
 
 
     def getByCategory(self, category):

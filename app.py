@@ -45,8 +45,6 @@ if __name__ == '__main__':
     app = create_app()
     args = get_args()
     
-    list_of_lists = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-    flat_list = [item for sublist in list_of_lists for item in sublist]
     # устанавливаем конфиг
     app.config['NO_SERVICES'] = args.light
 

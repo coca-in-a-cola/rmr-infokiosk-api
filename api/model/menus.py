@@ -1,6 +1,6 @@
 from api.model.declarative_base import db
 from flask import current_app
-import uuid
+import uuid as _uuid
 
 
 class Menu(db.Model):
@@ -16,6 +16,10 @@ class Menu(db.Model):
         cascade = "all, delete, delete-orphan" 
     )
 
+    def __init__(self, uuid = str(_uuid.uuid4().hex), buttons = [], **kwargs):
+        super().__init__(uuid = uuid, **kwargs)
+        self.buttons = [Button(**button, menu_uuid = uuid) for button in buttons]
+
 
 class Button(db.Model):
     uuid = db.Column(db.String(32), primary_key = True)
@@ -24,15 +28,16 @@ class Button(db.Model):
     detail = db.Column(db.Text())
     text = db.Column(db.Text())
     onClick = db.Column(db.Text())
-
     menu_uuid = db.Column(db.String(32), db.ForeignKey('menu.uuid'))
-    #menu = db.relationship("Menu")
+
+    def __init__(self, uuid = str(_uuid.uuid4().hex), **kwargs):
+        super().__init__(uuid = uuid, **kwargs)
 
 
 def get_menu_by_location(location):
     menu = Menu.query\
                 .filter_by(location = location)\
-                .all()
+                .first()
         
     return menu
 
