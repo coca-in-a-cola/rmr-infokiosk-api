@@ -50,6 +50,6 @@ def fetch_token(f):
             """)
 
         # returns the current logged in users contex to the routes
-        return  f(current_user, *args, **kwargs)
+        return  f(*args, user_info = current_user, **kwargs)
     
     return decorated

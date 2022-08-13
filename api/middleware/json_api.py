@@ -15,10 +15,21 @@ class JSON_API:
             schema = self.Schema().load(data, many=many, partial=True)
             model = self.Model(**schema)
         except:
-            raise f'Невозможно создать модель типа {self.Model.__class__.__name__}'
+            raise Exception(f'Невозможно создать модель типа {self.Model.__class__.__name__}')
         
-        return model
-    
+        return model    
+
+
+    def return_model(self, f):
+        @functools.wraps(f)
+        def decorated(*args, model, **kwargs):
+            try:
+                schema = self.Schema().dump(model, many=False)
+            except:
+                return f(*args, model=model, **kwargs)
+            return jsonify(schema), 200
+        return decorated
+
 
     def query_model(self, data, many=False):
         try:
@@ -45,17 +56,6 @@ class JSON_API:
         if (many):
             return found.all()
         return found.first()
-    
-
-    def return_model(self, f):
-        @functools.wraps(f)
-        def decorated(*args, model, **kwargs):
-            try:
-                schema = self.Schema().dump(model, many=False)
-            except:
-                return f(*args, model=model, **kwargs)
-            return jsonify(schema), 200
-        return decorated
 
 
     def return_models(self, f):
@@ -78,7 +78,7 @@ class JSON_API:
             except:
                 current_app.db.session.rollback()
                 return jsonify({
-                        'error' : f'Невозможно добавить в базу модели типа {models[0].__class__.__name__}'
+                        'error' : f'Невозможно добавить в базу модели'
                 }), 400
             
             return f(*args, models=models, **kwargs)
@@ -96,7 +96,7 @@ class JSON_API:
             except Exception as ex:
                 current_app.db.session.rollback()
                 return jsonify({
-                        'error' : f'Невозможно добавить модель типа {model.__class__.__name__}: f{ex}'
+                        'error' : f'Невозможно добавить модель: f{ex}'
                 }), 400
             
             return f(*args, model=model, **kwargs)
@@ -115,7 +115,7 @@ class JSON_API:
             except Exception as ex:
                 current_app.db.session.rollback()
                 return jsonify({
-                        'error' : f'Невозможно изменить модель типа {model.__class__.__name__}: f{ex}'
+                        'error' : f'Невозможно изменить модель: f{ex}'
                 }), 400
             
             return f(model, *args, **kwargs)
@@ -126,55 +126,42 @@ class JSON_API:
         @functools.wraps(f)
         def decorated(*args, uuid, **kwargs):
             try:
-                model = self.query_model({'uuid': uuid})
+                model = self.Model.query.get(uuid)
                 current_app.db.session.delete(model)
                 current_app.db.session.commit()
             except Exception as ex:
                 current_app.db.session.rollback()
                 return jsonify({
-                        'error' : f'Невозможно удалить модель типа {self.Model.__class__.__name__}: f{ex}'
+                        'error' : f'Невозможно удалить модель: f{ex}'
                 }), 400
             
             return f(*args, model=model, **kwargs)
         return decorated
 
 
-    # TODO: дописать
-    def update_model(self, model: db.Model, data: dict):
-        for key, value in data.items():
-            attr = getattr(model, key)
-            if (attr is db.Model):
-                self.update_model(attr, data[key])
-            elif (attr is list and len(attr) and all([e is db.Model for e in attr])):
-                for model in attr:
-                    self.update_model(model, data[key])
-            else:
-                setattr(model, key, value)
-
-
     def put_by_uuid(self, f):
         @functools.wraps(f)
-        def decorated(*args, data:dict, uuid, **kwargs):
+        def decorated(*args, uuid, data:dict, **kwargs):
+            status = 200
             try:
-                model = self.query_model({'uuid': uuid})
-                
-                for key, value in data.items():
-                    setattr(model, key, value)
-                current_app.db.session.commit()
+                model = self.Model.query.get(uuid)
+                current_app.db.session.delete(model)
             except:
                 current_app.db.session.rollback()
+                # если у нас ранее не было изменяемой модели, надо уведомить пользователя
+                # статусом 201 Created и создать новую
+                status = 201
 
-                try:
-                    data['uuid'] = 'uuid'
-                    model = self.create_model(data)
-                    current_app.db.session.add(model)
-                    current_app.db.session.commit()
-
-                except Exception as ex:
-                    current_app.db.session.rollback()
-                    return jsonify({
-                            'error' : f'Невозможно изменить модель типа {self.Model.__class__.__name__}: f{ex}'
-                    }), 400
+            try:
+                model = self.create_model(data)
+                current_app.db.session.add(model)
+                current_app.db.session.commit()
+                
+            except Exception as ex:
+                current_app.db.session.rollback()
+                return jsonify({
+                        'error' : f'Невозможно изменить модель типа {self.Model.__class__.__name__}: {ex}'
+                }), 400
             
             return f(*args, model=model, **kwargs)
         return decorated

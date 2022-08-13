@@ -16,7 +16,11 @@ class Menu(db.Model):
         cascade = "all, delete, delete-orphan" 
     )
 
-    def __init__(self, uuid = str(_uuid.uuid4().hex), buttons = [], **kwargs):
+    def __init__(self, buttons = [], uuid = None, **kwargs):
+        if not uuid:
+            #Нельзя генерировать UUID в шапке функции, т.к. получится фиксированное значение
+            uuid = str(_uuid.uuid4().hex)
+
         super().__init__(uuid = uuid, **kwargs)
         self.buttons = [Button(**button, menu_uuid = uuid) for button in buttons]
 
@@ -30,85 +34,9 @@ class Button(db.Model):
     onClick = db.Column(db.Text())
     menu_uuid = db.Column(db.String(32), db.ForeignKey('menu.uuid'))
 
-    def __init__(self, uuid = str(_uuid.uuid4().hex), **kwargs):
+    def __init__(self, uuid = None, **kwargs):
+        if not uuid:
+            #Нельзя генерировать UUID в шапке функции, т.к. получится фиксированное значение
+            uuid = str(_uuid.uuid4().hex)
+
         super().__init__(uuid = uuid, **kwargs)
-
-
-def get_menu_by_location(location):
-    menu = Menu.query\
-                .filter_by(location = location)\
-                .first()
-        
-    return menu
-
-
-def get_menus():
-    return Menu.query.all()
-
-
-def add_menus(data):
-    current_app.db.session.add_all([__create_menu_from_data(item) for item in data])
-    current_app.db.session.commit()
-
-
-def __create_menu_from_data(data):
-    menu_uuid = data['uuid'] if 'uuid' in data else str(uuid.uuid4().hex)
-    menu = Menu(
-            uuid = menu_uuid,
-            goBack = data['goBack'] if 'goBack' in data else None,
-            goBackText = data['goBackText'] if 'goBackText' in data else "",
-            location = data['location'] if 'location' in data else None,
-            type = data['type'] if 'goBack' in data else None,
-            buttons = [
-                Button(
-                    uuid = button['uuid'] if 'uuid' in button else str(uuid.uuid4().hex),
-                    icon = button['icon'] if 'icon' in button else None,
-                    link = button['link'] if 'link' in button else None,
-                    detail = button['detail'] if 'detail' in button else None,
-                    text = button['text'] if 'text' in button else None,
-                    onClick = button['onClick'] if 'onClick' in button else None,
-
-                    menu_uuid = menu_uuid
-                )
-                for button in data['buttons']
-            ] if 'buttons' in data else []
-        )
-    return menu
-
-
-def add_menu(data):
-    try:
-        menu = __create_menu_from_data(data)
-        current_app.db.session.add(menu)
-    except:
-        current_app.db.session.rollback()
-        raise
-    current_app.db.session.commit()
-    return menu
-
-
-def delete_menu_by_uuid(uuid):
-    try:
-        menu = Menu.query.get(uuid)
-        current_app.db.session.delete(menu)
-    except:
-        current_app.db.session.rollback()
-        raise
-
-    current_app.db.session.commit()
-
-
-def update_menu_by_uuid(uuid, new_data):
-    new_data['uuid'] = uuid
-    try:
-        menu = Menu.query.get(uuid)
-        current_app.db.session.delete(menu)
-        menu = __create_menu_from_data(new_data)
-        current_app.db.session.add(menu)
-    
-    except:
-        current_app.db.session.rollback()
-        raise
-
-    current_app.db.session.commit()
-    return menu

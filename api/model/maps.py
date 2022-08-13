@@ -1,20 +1,16 @@
-import os
-
-#from api.model.news import NewsModel
-
-class MapsModel:
-
-
-    def __init__(self, upload_dir, render_url):
-        # подготовка данных
-        dirs = os.listdir(upload_dir)
-
-        #models = [NewsModel(os.path.join(upload_dir, dir), \
-                    #f'{render_url}/{dir}') for dir in dirs] 
-
-        #self.__entries = dict(zip(dirs, models))
+from api.model.declarative_base import db
+from flask import current_app
+from datetime import datetime
+import uuid as _uuid
 
 
-    def getByCategory(self, category):
-        if (category in self.__entries):
-            return self.__entries[category].get_all()
+class Maps(db.Model):
+    uuid = db.Column(db.String(32), primary_key = True)
+    url = db.Column(db.Text())
+    title = db.Column(db.Text())
+    location = db.Column(db.Text())
+
+    def __init__(self, uuid = None, location = "", **kwargs):
+        if not uuid:
+            uuid = str(_uuid.uuid4().hex)
+        super().__init__(uuid = uuid, location = location, **kwargs)

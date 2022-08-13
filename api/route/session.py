@@ -7,7 +7,7 @@ from api.middleware.fetch_token import fetch_token
 from api.middleware.make_token import make_token
 from definitions import ROOT_DIR
 from datetime import datetime, timedelta
-from api.model.user import get_user_by_card_code
+from api.integrations.rmrail_1c import get_user_by_card_code
 
 session_api = Blueprint('session', __name__)
 

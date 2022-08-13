@@ -10,5 +10,9 @@ class News(db.Model):
     title = db.Column(db.Text())
     created = db.Column(db.DateTime())
 
-    def __init__(self, uuid = str(_uuid.uuid4().hex), created = datetime.utcnow(), **kwargs):
+    def __init__(self, uuid = None, created = None, **kwargs):
+        if not uuid:
+            uuid = str(_uuid.uuid4().hex)
+        if not created:
+            created = datetime.utcnow()
         super().__init__(uuid = uuid, created = created, **kwargs)

@@ -5,6 +5,7 @@ from api.route.maps import maps_api
 from api.route.menus import menus_api
 from api.route.session import session_api
 from api.route.upload import upload
+from api.route.forms import forms_api
 from route import spa
 from waitress import serve
 import app_secrets
@@ -22,6 +23,7 @@ def create_app():
     app.register_blueprint(maps_api)
     app.register_blueprint(menus_api)
     app.register_blueprint(session_api)
+    app.register_blueprint(forms_api)
     app.register_blueprint(upload)
     # Держите его последним
     app.register_blueprint(spa)

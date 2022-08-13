@@ -154,3 +154,7 @@ cython_debug/
 .vscode
 app_secrets.py
 Pipfile.lock
+upload
+request.xml
+response.xml
+db
