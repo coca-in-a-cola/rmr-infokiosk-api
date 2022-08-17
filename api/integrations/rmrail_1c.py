@@ -73,7 +73,7 @@ def dump_form_data(formTask: FormTask, formData: dict):
         if (formField.name in formData):
             dump[formField.label] = formData[formField.name]
     
-    return '\n'.join([f'{key}: {value}' for key, value in dump.items()])
+    return ' | '.join([f'{key}: {value}' for key, value in dump.items()])
 
 
 def send_form_task(user: User, formTask: FormTask, formData: dict):
@@ -112,16 +112,17 @@ def send_form_task(user: User, formTask: FormTask, formData: dict):
             <dm:started>false</dm:started>
             <dm:completed>false</dm:completed>
             <dm:description>
-    Тип: {formTask.title}
-    ФИО: {user.fullname}
-    Табельный номер: {user.personnel_number}
-    Подразделение: {user.subdivision}
-    Должность: {user.position}
-    Номер телефона: {user.phone_number}
-    
-    Дополнительня информация с формы:
-    {dump_form_data(formTask, formData)}
-    </dm:description>
+                Тип: {formTask.title}
+                ФИО: {user.fullname}
+                Табельный номер: {user.personnel_number}
+                Подразделение: {user.subdivision}
+                Должность: {user.position}
+                Номер телефона: {user.phone_number}
+                
+                {"Дополнительня информация с формы:" if dump_form_data(formTask, formData) else ""}
+                {dump_form_data(formTask, formData)}
+
+            </dm:description>
             <dm:dueDate>{(datetime.utcnow() + timedelta(hours=formTask.completionTimeInHours)).isoformat()}</dm:dueDate>
             <dm:state>
                 <dm:name>Активен</dm:name>
@@ -177,15 +178,14 @@ def send_form_task(user: User, formTask: FormTask, formData: dict):
         </dm:execute>
         </x:Body>
     </x:Envelope>
-    """).replace('\n', " ").replace("   ", " ")
+    """)
 
     xml = parseString(data)
     xml_pretty_str = xml.toprettyxml()
     
-    # TODO: убрать после дебага
-    output_log = open('request.xml', 'w')
-    output_log.write(xml_pretty_str)
-    output_log.close()
+    # output_log = open('request.xml', 'w')
+    # output_log.write(xml_pretty_str)
+    # output_log.close()
 
     response = requests.post(
         current_app.config['APP_1C_SERVICE_URI'],
@@ -195,10 +195,9 @@ def send_form_task(user: User, formTask: FormTask, formData: dict):
     )
     xml_body = response.text
 
-    # TODO: убрать после дебага
-    response_log = open('response.xml', 'w')
-    response_log.write(xml_body)
-    response_log.close()
+    # response_log = open('response.xml', 'w')
+    # response_log.write(xml_body)
+    # response_log.close()
     if (response.status_code == 200):
         return
     else:
