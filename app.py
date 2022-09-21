@@ -13,6 +13,7 @@ import app_secrets
 import app_config
 from itertools import chain
 from api.model.declarative_base import db
+from flask_cors import CORS
 import sys
 
 def create_app():
@@ -74,4 +75,5 @@ if __name__ == '__main__':
     if (args.production):
         serve(app, host=host, port=port)
     else:
+        CORS(app)
         app.run(host=host, port=port)
