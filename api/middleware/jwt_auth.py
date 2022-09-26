@@ -42,6 +42,7 @@ def make_session(user_info, confirmed, confirm_number, show_user_fields = []):
         authToken = token,
         lifeTime = current_app.config['SESSION_TIME_IN_SECONDS'],
         phoneNumber = user_info['phone_number'],
+        confirmed = confirmed,
     )
     if not current_app.config["GSM_ENABLED"]:
         result['confirmNumber'] = confirm_number
