@@ -3,26 +3,16 @@ import requests
 from xml.dom.minidom import parseString
 from flask import current_app
 from api.model.forms import FormTask
-from api.model.user import User
 from datetime import datetime, timedelta
 import textwrap
 
+
 def get_user_by_card_code(code):
-    user_info = User.query\
-                .filter_by(card_code = code)\
-                .first()
+    user_info = get_user_by_card_code_1C(code)
+    if (user_info):
+        return user_info
 
-    # если не нашли, вытягиваем данные с 1С
-    if not user_info:
-        user_info = get_user_by_card_code_1C(code)
-        if (user_info):
-            user = User(**user_info)
-            current_app.db.session.add(user)
-            current_app.db.session.commit()
-        else:
-            return None
-
-    return user_info
+    return None
 
 
 def get_user_by_card_code_1C(code) -> dict:
@@ -76,7 +66,7 @@ def dump_form_data(formTask: FormTask, formData: dict):
     return ' | '.join([f'{key}: {value}' for key, value in dump.items()])
 
 
-def send_form_task(user: User, formTask: FormTask, formData: dict):
+def send_form_task(user_info, formTask: FormTask, formData: dict):
     data=textwrap.dedent(f"""
         <x:Envelope
         xmlns:x="http://schemas.xmlsoap.org/soap/envelope/"
@@ -113,11 +103,11 @@ def send_form_task(user: User, formTask: FormTask, formData: dict):
             <dm:completed>false</dm:completed>
             <dm:description>
                 Тип: {formTask.title}
-                ФИО: {user.fullname}
-                Табельный номер: {user.personnel_number}
-                Подразделение: {user.subdivision}
-                Должность: {user.position}
-                Номер телефона: {user.phone_number}
+                ФИО: {user_info.fullname}
+                Табельный номер: {user_info.personnel_number}
+                Подразделение: {user_info.subdivision}
+                Должность: {user_info.position}
+                Номер телефона: {user_info.phone_number}
                 
                 {"Дополнительня информация с формы:" if dump_form_data(formTask, formData) else ""}
                 {dump_form_data(formTask, formData)}
@@ -195,9 +185,9 @@ def send_form_task(user: User, formTask: FormTask, formData: dict):
     )
     xml_body = response.text
 
-    # response_log = open('response.xml', 'w')
-    # response_log.write(xml_body)
-    # response_log.close()
+    response_log = open('response.xml', 'w')
+    response_log.write(xml_body)
+    response_log.close()
     if (response.status_code == 200):
         return
     else:

@@ -2,12 +2,13 @@ import os
 from http import HTTPStatus
 from flask import Blueprint
 from flask import jsonify
+from api.middleware.jwt_auth import check_user_confirmed
 from api.model.forms import FormTask, FormField
 from api.schema.forms import FormTaskSchema
 from api.middleware.fetch_json import fetch_json
 from api.middleware.check_admin import check_admin
 from api.middleware.json_api import JSON_API
-from api.middleware.fetch_token import fetch_token
+from api.middleware.jwt_auth import fetch_token
 from api.integrations.rmrail_1c import send_form_task
 
 
@@ -39,7 +40,8 @@ def post_forms(model):
 @forms_api.route('/api/forms/send/<uuid>', methods=['POST'])
 @fetch_json
 @fetch_token
-def send_form(*args, uuid, data, user_info, **kwargs):
+@check_user_confirmed
+def send_form(*args, uuid, data, token, **kwargs):
     formTask = FormTask.query.get(uuid)
     if not formTask:
         return jsonify({
@@ -47,7 +49,7 @@ def send_form(*args, uuid, data, user_info, **kwargs):
             }), 404
     
     try:
-        send_form_task(user_info, formTask, data)
+        send_form_task(token["user_info"], formTask, data)
     except Exception as ex:
         return jsonify({
                 'error' : f'Не удалось отправить форму! Исключение: \n {ex}'
