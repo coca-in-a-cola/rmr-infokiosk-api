@@ -10,6 +10,8 @@ class Menu(db.Model):
     goBack = db.Column(db.Boolean)
     goBackText = db.Column(db.Text())
 
+    color = db.Column(db.Text())
+
     buttons = db.relationship("Button",
         backref="_menu",
         lazy='dynamic',
@@ -18,7 +20,7 @@ class Menu(db.Model):
 
     def __init__(self, buttons = [], uuid = None, **kwargs):
         if not uuid:
-            #Нельзя генерировать UUID в шапке функции, т.к. получится фиксированное значение
+            # Нельзя генерировать UUID в шапке (...) функции, т.к. получится фиксированное значение
             uuid = str(_uuid.uuid4().hex)
 
         super().__init__(uuid = uuid, **kwargs)

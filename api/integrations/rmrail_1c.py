@@ -103,11 +103,11 @@ def send_form_task(user_info, formTask: FormTask, formData: dict):
             <dm:completed>false</dm:completed>
             <dm:description>
                 Тип: {formTask.title}
-                ФИО: {user_info.fullname}
-                Табельный номер: {user_info.personnel_number}
-                Подразделение: {user_info.subdivision}
-                Должность: {user_info.position}
-                Номер телефона: {user_info.phone_number}
+                ФИО: {user_info['fullname']}
+                Табельный номер: {user_info['personnel_number']}
+                Подразделение: {user_info['subdivision']}
+                Должность: {user_info['position']}
+                Номер телефона: {user_info['phone_number']}
                 
                 {"Дополнительня информация с формы:" if dump_form_data(formTask, formData) else ""}
                 {dump_form_data(formTask, formData)}

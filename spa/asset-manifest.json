@@ -1,31 +1,23 @@
 {
   "files": {
-    "main.css": "/spa/static/css/main.4f900973.chunk.css",
-    "main.js": "/spa/static/js/main.a242bcf4.chunk.js",
-    "main.js.map": "/spa/static/js/main.a242bcf4.chunk.js.map",
-    "runtime-main.js": "/spa/static/js/runtime-main.f39af357.js",
-    "runtime-main.js.map": "/spa/static/js/runtime-main.f39af357.js.map",
-    "static/css/2.07e018fc.chunk.css": "/spa/static/css/2.07e018fc.chunk.css",
-    "static/js/2.0ce9b19f.chunk.js": "/spa/static/js/2.0ce9b19f.chunk.js",
-    "static/js/2.0ce9b19f.chunk.js.map": "/spa/static/js/2.0ce9b19f.chunk.js.map",
-    "static/js/3.889c9e87.chunk.js": "/spa/static/js/3.889c9e87.chunk.js",
-    "static/js/3.889c9e87.chunk.js.map": "/spa/static/js/3.889c9e87.chunk.js.map",
-    "5379ff0bd7b27a422592e5dbe2f5692a.js": "/spa/5379ff0bd7b27a422592e5dbe2f5692a.js",
-    "5379ff0bd7b27a422592e5dbe2f5692a.js.LICENSE.txt": "/spa/5379ff0bd7b27a422592e5dbe2f5692a.js.LICENSE.txt",
+    "main.css": "/spa/static/css/main.bb26ca83.css",
+    "main.js": "/spa/static/js/main.d87a5814.js",
+    "static/js/787.2ecb3b07.chunk.js": "/spa/static/js/787.2ecb3b07.chunk.js",
+    "static/media/background.jpg": "/spa/static/media/background.54f5333094604d964a27.jpg",
+    "pdf.worker.js": "/spa/e7e915313973ba1d49f9bb2a1998626e.js",
+    "static/media/Arial-MT.ttf": "/spa/static/media/Arial-MT.e8b1471c1f6fb339ab8a.ttf",
+    "static/media/Arial-BoldMT.ttf": "/spa/static/media/Arial-BoldMT.1dae915d4a0921661886.ttf",
+    "static/media/logo-lg.png": "/spa/static/media/logo-lg.e88d47c55b81486c8181.png",
+    "static/media/qrcod_dU7.png": "/spa/static/media/qrcod_dU7.9148431b55cd79e33ef5.png",
+    "static/media/qr-code вк.png": "/spa/static/media/qr-code вк.586be84ab2fed847d203.png",
+    "static/media/qr-code телеграм.png": "/spa/static/media/qr-code телеграм.32f9fea7e9d7eda709d7.png",
     "index.html": "/spa/index.html",
-    "static/css/2.07e018fc.chunk.css.map": "/spa/static/css/2.07e018fc.chunk.css.map",
-    "static/css/main.4f900973.chunk.css.map": "/spa/static/css/main.4f900973.chunk.css.map",
-    "static/js/2.0ce9b19f.chunk.js.LICENSE.txt": "/spa/static/js/2.0ce9b19f.chunk.js.LICENSE.txt",
-    "static/media/fonts.css": "/spa/static/media/Arial-MT.e8b1471c.ttf",
-    "static/media/background.54f53330.jpg": "/spa/static/media/background.54f53330.jpg",
-    "static/media/logo-lg.e88d47c5.png": "/spa/static/media/logo-lg.e88d47c5.png",
-    "static/media/logo.6ce24c58.svg": "/spa/static/media/logo.6ce24c58.svg"
+    "main.bb26ca83.css.map": "/spa/static/css/main.bb26ca83.css.map",
+    "main.d87a5814.js.map": "/spa/static/js/main.d87a5814.js.map",
+    "787.2ecb3b07.chunk.js.map": "/spa/static/js/787.2ecb3b07.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.f39af357.js",
-    "static/css/2.07e018fc.chunk.css",
-    "static/js/2.0ce9b19f.chunk.js",
-    "static/css/main.4f900973.chunk.css",
-    "static/js/main.a242bcf4.chunk.js"
+    "static/css/main.bb26ca83.css",
+    "static/js/main.d87a5814.js"
   ]
 }

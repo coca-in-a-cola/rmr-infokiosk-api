@@ -107,7 +107,7 @@ class JSON_API:
         @functools.wraps(f)
         def decorated(*args, uuid, data:dict, **kwargs):
             try:
-                data['uuid'] = 'uuid'
+                data['uuid'] = uuid
                 model = self.create_model(data)
                 current_app.db.session.add(model)
                 current_app.db.session.commit()

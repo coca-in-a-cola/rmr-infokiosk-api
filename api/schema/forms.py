@@ -10,13 +10,12 @@ class PerformerSchema(Schema):
 
 class FormFieldSchema(Schema):
     uuid = fields.String()
-    id = fields.String(allow_none=True)
     label = fields.String(allow_none=True)
     type = fields.String(allow_none=True)
     value = fields.String(allow_none=True)
     name = fields.String(allow_none=True)
-    min = fields.String(allow_none=True)
-    max = fields.String(allow_none=True)
+    placeholder = fields.String(allow_none=True)
+    required = fields.Bool(allow_none=True)
 
 
 class FormTaskSchema(Schema):
@@ -24,5 +23,6 @@ class FormTaskSchema(Schema):
     title = fields.String(allow_none=True)
     completionTimeInHours = fields.Integer()
     performers = fields.List(fields.Nested(PerformerSchema))
+    successMessage = fields.String()
     fields = fields.List(fields.Nested(FormFieldSchema))
 

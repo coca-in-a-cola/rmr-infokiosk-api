@@ -1,7 +1,7 @@
 import os
 from http import HTTPStatus
 from flask import Blueprint
-from flask import jsonify
+from flask import jsonify, current_app
 from api.middleware.jwt_auth import check_user_confirmed
 from api.model.forms import FormTask, FormField
 from api.schema.forms import FormTaskSchema
@@ -10,7 +10,7 @@ from api.middleware.check_admin import check_admin
 from api.middleware.json_api import JSON_API
 from api.middleware.jwt_auth import fetch_token
 from api.integrations.rmrail_1c import send_form_task
-
+from api.middleware.du_task_number import du_task_number
 
 forms_api = Blueprint('forms', __name__)
 json_api = JSON_API(FormTask, FormTaskSchema)
@@ -53,9 +53,11 @@ def send_form(*args, uuid, data, token, **kwargs):
     except Exception as ex:
         return jsonify({
                 'error' : f'Не удалось отправить форму! Исключение: \n {ex}'
-        }), 404
+        }), 400
     
-    return jsonify(data), 200
+    return jsonify(dict(
+        label = current_app.config["TASK_SUCCESS_REPORT"](du_task_number()),
+        text = formTask.successMessage)), 200
 
 
 @forms_api.route('/api/forms/<uuid>', methods=['GET'])
