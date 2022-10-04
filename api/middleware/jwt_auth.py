@@ -52,6 +52,10 @@ def make_session(user_info, confirmed, confirm_number, show_user_fields = []):
         return(''.join([init.lower(), *map(str.title, temp)]))
 
     for field in show_user_fields:
+        if field == "phone_number":
+            result[toCamelCase(field)] = ''.join([user_info[field][:-10], "******", user_info[field][-4:]])
+            continue
+        
         result[toCamelCase(field)] = user_info[field]
         
     return jsonify(result), 200
