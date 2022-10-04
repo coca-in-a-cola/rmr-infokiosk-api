@@ -1,9 +1,10 @@
 from flask import current_app
 import requests
 
-def send(phone, message):
-    response = requests.get(current_app.config["GSM_CONNECT_STRING"](phone, message))
 
+def send(phone, message):
+    response = requests.get(current_app.config["GSM_CONNECT_STRING"]+ f"&phonenumber={phone}&message={message}")
+    
     if (response.ok):
         return response
     else:
