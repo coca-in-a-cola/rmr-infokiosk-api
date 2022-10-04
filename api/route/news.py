@@ -23,7 +23,7 @@ def news():
     """
     result = News.query\
         .order_by(
-            News.created,
+            News.created.desc(),
             News.uuid
         ).all()
     

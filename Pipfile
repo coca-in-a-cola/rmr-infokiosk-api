@@ -12,7 +12,7 @@ pyjwt = "*"
 waitress = "*"
 jsonschema = "==3.0.2"
 flask-sqlalchemy = "*"
-requests = "*"
+requests = {extras = ["socks"], version = "*"}
 flask-cors = "*"
 
 [dev-packages]

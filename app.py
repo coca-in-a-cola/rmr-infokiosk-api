@@ -42,6 +42,7 @@ def get_args():
     parser.add_argument('-b', '--production', default=False, action='store_true', help='Отметьте, если сервер работает в боевом режиме')
     parser.add_argument('-g', '--gsm', default=False, action='store_true', help='Отметьте, чтобы включить использование GSM')
     parser.add_argument('-d', '--drop_db', default=False, action='store_true', help='ОПАСНО! Форматирует базу данных. Рекомендуется делать при первом запуске')
+    parser.add_argument('-S', '--proxy_server', type=str, help='Настройки прокси-сервера, например: socks5://user:pass@host:port')
     args = parser.parse_args()
     return args
 
@@ -52,6 +53,7 @@ if __name__ == '__main__':
     
     # устанавливаем конфиг
     app.config['GSM_ENABLED'] = args.gsm
+    app.config['PROXY_SERVER'] = args.proxy_server
 
     for key, value in chain(*[[(var, getattr(module, var)) for var in dir(module) \
         if not var.startswith("__")] for module in [app_config, app_secrets]]):

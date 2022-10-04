@@ -131,7 +131,8 @@ def auth_user(f):
                 if (current_app.config["GSM_ENABLED"]):
                     try:
                         send(user_info["phone_number"], f"{confirm_number} - ваш код подтверждения")
-                    except:
+                    except Exception as ex:
+                        pass
                         return jsonify({
                             'error' : 'На данный момент GSM-шлюз не работает. Приносим извинения за предоставленные неудобства.'
                         }), 500 
