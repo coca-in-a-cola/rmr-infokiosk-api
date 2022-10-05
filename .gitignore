@@ -158,3 +158,6 @@ upload
 request.xml
 response.xml
 db
+
+# Файл для хранения последовательного номера заявки
+du_sequence.json
