@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/spa/static/css/main.bb26ca83.css",
-    "main.js": "/spa/static/js/main.52d6a8a4.js",
+    "main.css": "/spa/static/css/main.f5d4b77d.css",
+    "main.js": "/spa/static/js/main.b46b7e71.js",
     "static/js/787.2ecb3b07.chunk.js": "/spa/static/js/787.2ecb3b07.chunk.js",
     "static/media/background.jpg": "/spa/static/media/background.54f5333094604d964a27.jpg",
     "pdf.worker.js": "/spa/e7e915313973ba1d49f9bb2a1998626e.js",
@@ -12,12 +12,12 @@
     "static/media/qr-code вк.png": "/spa/static/media/qr-code вк.586be84ab2fed847d203.png",
     "static/media/qr-code телеграм.png": "/spa/static/media/qr-code телеграм.32f9fea7e9d7eda709d7.png",
     "index.html": "/spa/index.html",
-    "main.bb26ca83.css.map": "/spa/static/css/main.bb26ca83.css.map",
-    "main.52d6a8a4.js.map": "/spa/static/js/main.52d6a8a4.js.map",
+    "main.f5d4b77d.css.map": "/spa/static/css/main.f5d4b77d.css.map",
+    "main.b46b7e71.js.map": "/spa/static/js/main.b46b7e71.js.map",
     "787.2ecb3b07.chunk.js.map": "/spa/static/js/787.2ecb3b07.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.bb26ca83.css",
-    "static/js/main.52d6a8a4.js"
+    "static/css/main.f5d4b77d.css",
+    "static/js/main.b46b7e71.js"
   ]
 }

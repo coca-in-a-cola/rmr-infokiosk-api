@@ -43,20 +43,23 @@ def post_forms(model):
 @check_user_confirmed
 def send_form(*args, uuid, data, token, **kwargs):
     formTask = FormTask.query.get(uuid)
+    taskNumber = du_task_number()
+
+    
     if not formTask:
         return jsonify({
                     'error' : f'Форма не найдена c uuid {uuid}'
             }), 404
     
     try:
-        send_form_task(token["user_info"], formTask, data)
+        send_form_task(token["user_info"], formTask, taskNumber, data)
     except Exception as ex:
         return jsonify({
                 'error' : f'Не удалось отправить форму! Исключение: \n {ex}'
         }), 400
     
     return jsonify(dict(
-        label = current_app.config["TASK_SUCCESS_REPORT"](du_task_number()),
+        label = current_app.config["TASK_SUCCESS_REPORT"](taskNumber),
         text = formTask.successMessage)), 200
 
 

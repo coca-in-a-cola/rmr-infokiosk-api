@@ -54,6 +54,7 @@ if __name__ == '__main__':
     # устанавливаем конфиг
     app.config['GSM_ENABLED'] = args.gsm
     app.config['PROXY_SERVER'] = args.proxy_server
+    app.config['PRODUCTION'] = args.production
 
     for key, value in chain(*[[(var, getattr(module, var)) for var in dir(module) \
         if not var.startswith("__")] for module in [app_config, app_secrets]]):

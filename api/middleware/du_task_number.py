@@ -4,7 +4,7 @@ sequenceNumber = 0
 lastDate = None
 
 def du_task_number():
-    d = date.today().strftime("%m%d%y")
+    d = date.today().strftime("%d%m%y")
     global lastDate, sequenceNumber
     if (d != lastDate):
         sequenceNumber = 0

@@ -41,6 +41,8 @@ def get_user_by_card_code_1C(code) -> dict:
         'subdivision': ('<m:Подразделение>', '</m:Подразделение>'),
         'position': ('<m:Должность>', '</m:Должность>'),
         'phone_number': ('<m:НомерТелефона>', '</m:НомерТелефона>'),
+        'date_of_birth': ('<m:ДатаРождения>', '</m:ДатаРождения>'),
+        'address': ('<m:АдресПрописки>', '</m:АдресПрописки>')
     }
 
     parsed = {
@@ -66,7 +68,7 @@ def dump_form_data(formTask: FormTask, formData: dict):
     return ' | '.join([f'{key}: {value}' for key, value in dump.items()])
 
 
-def send_form_task(user_info, formTask: FormTask, formData: dict):
+def send_form_task(user_info, formTask: FormTask, taskNumber, formData: dict):
     data=textwrap.dedent(f"""
         <x:Envelope
         xmlns:x="http://schemas.xmlsoap.org/soap/envelope/"
@@ -79,7 +81,13 @@ def send_form_task(user_info, formTask: FormTask, formData: dict):
                 <dm:request  xsi:type="dm:DMLaunchBusinessProcessRequest">
                     <dm:dataBaseID>556d22e5-8959-4a9f-b908-147a1e751adc</dm:dataBaseID>
                     <dm:businessProcess xsi:type="dm:DMBusinessProcessPerformance">
-                        <dm:name>{current_app.config['APP_1C_SERVICE_EXECUTE_NAME']}</dm:name>
+                        <dm:name>{
+                            current_app.config['APP_1C_SERVICE_EXECUTE_NAME'](
+                                number = taskNumber,
+                                name = formTask.title,
+                                subdivision = user_info['subdivision']
+                            )
+                        }</dm:name>
                         <dm:objectID>
                 <dm:id/>
                 <dm:type>DMBusinessProcessPerformance</dm:type>
@@ -102,12 +110,15 @@ def send_form_task(user_info, formTask: FormTask, formData: dict):
             <dm:started>false</dm:started>
             <dm:completed>false</dm:completed>
             <dm:description>
+                Номер заявки: {taskNumber}
                 Тип: {formTask.title}
                 ФИО: {user_info['fullname']}
+                Дата Рождения: {datetime.fromisoformat(user_info['date_of_birth']).strftime("%d.%m.%Y")}
                 Табельный номер: {user_info['personnel_number']}
                 Подразделение: {user_info['subdivision']}
                 Должность: {user_info['position']}
                 Номер телефона: {user_info['phone_number']}
+                Адрес по прописке: {user_info['address']}
                 
                 {"Дополнительня информация с формы:" if dump_form_data(formTask, formData) else ""}
                 {dump_form_data(formTask, formData)}
@@ -173,9 +184,10 @@ def send_form_task(user_info, formTask: FormTask, formData: dict):
     xml = parseString(data)
     xml_pretty_str = xml.toprettyxml()
     
-    # output_log = open('request.xml', 'w')
-    # output_log.write(xml_pretty_str)
-    # output_log.close()
+    if not (current_app.config['PRODUCTION']):
+        output_log = open('request.xml', 'w')
+        output_log.write(xml_pretty_str)
+        output_log.close()
 
     response = requests.post(
         current_app.config['APP_1C_SERVICE_URI'],
@@ -185,10 +197,12 @@ def send_form_task(user_info, formTask: FormTask, formData: dict):
     )
     xml_body = response.text
 
-    response_log = open('response.xml', 'w')
-    response_log.write(xml_body)
-    response_log.close()
+    if not (current_app.config['PRODUCTION']):
+        response_log = open('response.xml', 'w')
+        response_log.write(xml_body)
+        response_log.close()
+
     if (response.status_code == 200):
         return
     else:
-        raise Exception(f'{response}')
+        raise Exception(f'{response.status_code}')
