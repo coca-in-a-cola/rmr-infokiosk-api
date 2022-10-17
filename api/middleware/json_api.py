@@ -17,7 +17,7 @@ class JSON_API:
         except:
             raise Exception(f'Невозможно создать модель типа {self.Model.__class__.__name__}')
         
-        return model    
+        return model
 
 
     def return_model(self, f):
