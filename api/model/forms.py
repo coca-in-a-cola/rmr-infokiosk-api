@@ -66,9 +66,9 @@ class FormField(db.Model):
     name = db.Column(db.Text())
     label = db.Column(db.Text())
     type = db.Column(db.Text())
+    description = db.Column(db.Text())
     placeholder = db.Column(db.Text())
     required = db.Column(db.Boolean())
-
     formtask_uuid = db.Column(db.String(32), db.ForeignKey('formTask.uuid'))
 
     def __init__(self, uuid = None, **kwargs):

@@ -15,6 +15,9 @@ from itertools import chain
 from api.model.declarative_base import db
 from flask_cors import CORS
 import sys
+from flask_migrate import Migrate
+
+migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
@@ -31,6 +34,16 @@ def create_app():
     # Держите его последним
     app.register_blueprint(spa)
 
+    for key, value in chain(*[[(var, getattr(module, var)) for var in dir(module) \
+        if not var.startswith("__")] for module in [app_config, app_secrets]]):
+        app.config[key] = value
+
+    db.init_app(app)
+    app.db = db
+
+    migrate.init_app(app, db)
+
+
     # user_db.create_all(app=app)
     return app
 
@@ -42,6 +55,7 @@ def get_args():
     parser.add_argument('-b', '--production', default=False, action='store_true', help='Отметьте, если сервер работает в боевом режиме')
     parser.add_argument('-g', '--gsm', default=False, action='store_true', help='Отметьте, чтобы включить использование GSM')
     parser.add_argument('-d', '--drop_db', default=False, action='store_true', help='ОПАСНО! Форматирует базу данных. Рекомендуется делать при первом запуске')
+    parser.add_argument('-c', '--create_db', default=False, action='store_true', help='Создаёт структуру таблиц (Не форматирует существующие поля)')
     parser.add_argument('-S', '--proxy_server', type=str, help='Настройки прокси-сервера, например: socks5://user:pass@host:port')
     args = parser.parse_args()
     return args
@@ -56,19 +70,16 @@ if __name__ == '__main__':
     app.config['PROXY_SERVER'] = args.proxy_server
     app.config['PRODUCTION'] = args.production
 
-    for key, value in chain(*[[(var, getattr(module, var)) for var in dir(module) \
-        if not var.startswith("__")] for module in [app_config, app_secrets]]):
-        app.config[key] = value
-
-    db.init_app(app)
-    app.db = db
+    #app.config.fromfile([app_config, app_secrets])
     #db.create_all()
 
-    if (args.drop_db):
+    if (args.drop_db or args.create_db):
         @app.before_first_request
         def create_tables():
-            db.drop_all()
+            if (args.drop_db):
+                db.drop_all()
             db.create_all()
+    
 
         
     # app.py -p 3000 запустит приложение с портом 3000

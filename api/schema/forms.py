@@ -14,6 +14,7 @@ class FormFieldSchema(Schema):
     type = fields.String(allow_none=True)
     value = fields.String(allow_none=True)
     name = fields.String(allow_none=True)
+    description = fields.String(allow_none=True)
     placeholder = fields.String(allow_none=True)
     required = fields.Bool(allow_none=True)
 
