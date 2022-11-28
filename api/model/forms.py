@@ -2,7 +2,7 @@ from api.model.declarative_base import db
 import uuid as _uuid
 from app_config import TASK_SUCCESS_REPORT_DESCRIPTION_DEFAULT
 
-class FormTask(db.Model):
+class PTable(db.Model):
     __tablename__ = "formTask"
 
     uuid = db.Column(db.String(32), primary_key = True)

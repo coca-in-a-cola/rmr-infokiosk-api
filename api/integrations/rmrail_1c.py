@@ -2,7 +2,7 @@ from tokenize import String
 import requests
 from xml.dom.minidom import parseString
 from flask import current_app
-from api.model.forms import FormTask
+from api.model.forms import PTable
 from datetime import datetime, timedelta
 import textwrap
 
@@ -59,7 +59,7 @@ def get_user_by_card_code_1C(code) -> dict:
     return parsed if len(parsed) > 1 else None
 
 
-def dump_form_data(formTask: FormTask, formData: dict):
+def dump_form_data(formTask: PTable, formData: dict):
     dump = dict()
     for formField in formTask.fields:
         if (formField.name in formData):
@@ -68,7 +68,7 @@ def dump_form_data(formTask: FormTask, formData: dict):
     return ' | '.join([f'{key}: {value}' for key, value in dump.items()])
 
 
-def send_form_task(user_info, formTask: FormTask, taskNumber, formData: dict):
+def send_form_task(user_info, formTask: PTable, taskNumber, formData: dict):
     data=textwrap.dedent(f"""
         <x:Envelope
         xmlns:x="http://schemas.xmlsoap.org/soap/envelope/"

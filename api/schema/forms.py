@@ -19,7 +19,7 @@ class FormFieldSchema(Schema):
     required = fields.Bool(allow_none=True)
 
 
-class FormTaskSchema(Schema):
+class PTableSchema(Schema):
     uuid = fields.String()
     title = fields.String(allow_none=True)
     completionTimeInHours = fields.Integer()

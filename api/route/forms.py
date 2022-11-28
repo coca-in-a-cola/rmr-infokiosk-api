@@ -3,8 +3,8 @@ from http import HTTPStatus
 from flask import Blueprint
 from flask import jsonify, current_app
 from api.middleware.jwt_auth import check_user_confirmed
-from api.model.forms import FormTask, FormField
-from api.schema.forms import FormTaskSchema
+from api.model.forms import PTable, FormField
+from api.schema.forms import PTableSchema
 from api.middleware.fetch_json import fetch_json
 from api.middleware.check_admin import check_admin
 from api.middleware.json_api import JSON_API
@@ -13,14 +13,14 @@ from api.integrations.rmrail_1c import send_form_task
 from api.middleware.du_task_number import du_task_number
 
 forms_api = Blueprint('forms', __name__)
-json_api = JSON_API(FormTask, FormTaskSchema)
+json_api = JSON_API(PTable, PTableSchema)
 
 
 @forms_api.route('/api/forms', methods=['GET'])
 def forms():
-    result = FormTask.query.all()
+    result = PTable.query.all()
     if (result):
-        dump = FormTaskSchema().dump(result, many=True)
+        dump = PTableSchema().dump(result, many=True)
         return jsonify(dump)
     else:
         return jsonify({
@@ -42,7 +42,7 @@ def post_forms(model):
 @fetch_token
 @check_user_confirmed
 def send_form(*args, uuid, data, token, **kwargs):
-    formTask = FormTask.query.get(uuid)
+    formTask = PTable.query.get(uuid)
     taskNumber = du_task_number()
 
     
@@ -65,9 +65,9 @@ def send_form(*args, uuid, data, token, **kwargs):
 
 @forms_api.route('/api/forms/<uuid>', methods=['GET'])
 def get_forms_by_uuid(*args, uuid, **kwargs):
-    result = FormTask.query.get(uuid)
+    result = PTable.query.get(uuid)
     if (result):
-        dump = FormTaskSchema().dump(result, many=False)
+        dump = PTableSchema().dump(result, many=False)
         return jsonify(dump)
     else:
         return jsonify({
