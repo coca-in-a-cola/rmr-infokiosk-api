@@ -7,6 +7,8 @@ from api.route.session import session_api
 from api.route.upload import upload
 from api.route.forms import forms_api
 from api.route.papers import papers_api
+from api.route.ptables import ptables_api
+
 from route import spa
 from waitress import serve
 import app_secrets
@@ -31,6 +33,7 @@ def create_app():
     app.register_blueprint(forms_api)
     app.register_blueprint(upload)
     app.register_blueprint(papers_api)
+    app.register_blueprint(ptables_api)
     # Держите его последним
     app.register_blueprint(spa)
 
