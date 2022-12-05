@@ -18,8 +18,10 @@ from api.model.declarative_base import db
 from flask_cors import CORS
 import sys
 from flask_migrate import Migrate
+import asyncio
 
 migrate = Migrate()
+
 
 def create_app():
     app = Flask(__name__)

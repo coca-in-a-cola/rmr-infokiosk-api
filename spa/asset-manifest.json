@@ -1,8 +1,9 @@
 {
   "files": {
-    "main.css": "/spa/static/css/main.f857f5d2.css",
-    "main.js": "/spa/static/js/main.a6576a92.js",
+    "main.css": "/spa/static/css/main.df7f64a9.css",
+    "main.js": "/spa/static/js/main.e3d525ae.js",
     "static/js/787.2ecb3b07.chunk.js": "/spa/static/js/787.2ecb3b07.chunk.js",
+    "static/media/RMrail-2020_1.mp4": "/spa/static/media/RMrail-2020_1.09522b8fe0aeb6631bdc.mp4",
     "static/media/background.jpg": "/spa/static/media/background.54f5333094604d964a27.jpg",
     "pdf.worker.js": "/spa/e7e915313973ba1d49f9bb2a1998626e.js",
     "static/media/Arial-MT.ttf": "/spa/static/media/Arial-MT.e8b1471c1f6fb339ab8a.ttf",
@@ -12,12 +13,12 @@
     "static/media/qr-code вк.png": "/spa/static/media/qr-code вк.586be84ab2fed847d203.png",
     "static/media/qr-code телеграм.png": "/spa/static/media/qr-code телеграм.32f9fea7e9d7eda709d7.png",
     "index.html": "/spa/index.html",
-    "main.f857f5d2.css.map": "/spa/static/css/main.f857f5d2.css.map",
-    "main.a6576a92.js.map": "/spa/static/js/main.a6576a92.js.map",
+    "main.df7f64a9.css.map": "/spa/static/css/main.df7f64a9.css.map",
+    "main.e3d525ae.js.map": "/spa/static/js/main.e3d525ae.js.map",
     "787.2ecb3b07.chunk.js.map": "/spa/static/js/787.2ecb3b07.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f857f5d2.css",
-    "static/js/main.a6576a92.js"
+    "static/css/main.df7f64a9.css",
+    "static/js/main.e3d525ae.js"
   ]
 }
