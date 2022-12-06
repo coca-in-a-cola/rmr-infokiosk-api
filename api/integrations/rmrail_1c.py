@@ -120,7 +120,7 @@ def send_form_task(user_info, formTask: PTable, taskNumber, formData: dict):
                 Номер телефона: {user_info['phone_number']}
                 Адрес по прописке: {user_info['address']}
                 
-                {"Дополнительня информация с формы:" if dump_form_data(formTask, formData) else ""}
+                {"Дополнительная информация с формы:" if dump_form_data(formTask, formData) else ""}
                 {dump_form_data(formTask, formData)}
 
             </dm:description>
