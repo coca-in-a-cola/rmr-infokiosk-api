@@ -7,7 +7,7 @@ sequenceNumber = 0
 lastDate = None
 
 try:
-    read_number = open(os.path.join(basedir, du_sequence.json), 'r')
+    read_number = open(os.path.join(basedir, "du_sequence.json"), 'r')
     sequenceNumber, lastDate = json.load(read_number)
     read_number.close()
 except:
@@ -24,7 +24,7 @@ def du_task_number():
 
     sequenceNumber += 1
 
-    save_number = open(os.path.join(basedir, du_sequence.json), 'w')
+    save_number = open(os.path.join(basedir, "du_sequence.json"), 'w')
     save_number.write(json.dumps([sequenceNumber, lastDate]))
     save_number.close()
 
