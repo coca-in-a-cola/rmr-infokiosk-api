@@ -5,6 +5,7 @@ from functools import wraps
 import uuid
 import os
 from flask import jsonify
+from definitions import basedir
 
 
 
@@ -43,60 +44,60 @@ def check_extension(filename):
 
 def mkrecursivedirs(paths, upload_dir):
 
-    full_relative_path = f"{upload_dir}"
+    full_absolute_path = os.path.join(basedir, upload_dir)
     for directory in paths:
         if ('.' in directory):
             raise Exception('Неверный фомрат пути!')
     
-        full_relative_path = os.path.join(full_relative_path, directory)
-        if not os.path.exists(full_relative_path):
-            os.mkdir(full_relative_path)
-    return full_relative_path
+        full_absolute_path = os.path.join(full_absolute_path, directory)
+        if not os.path.exists(full_absolute_path):
+            os.mkdir(full_absolute_path)
+    return full_absolute_path
 
 
 def mkdir(filename, upload_dir):
     path = filename.split('/')
-    full_relative_path = mkrecursivedirs(path[:len(path)-1], upload_dir)
-    return full_relative_path
+    full_absolute_path = mkrecursivedirs(path[:len(path)-1], upload_dir)
+    return full_absolute_path
 
 
 def save_file(file, filename, upload_dir):    
     path = filename.split('/')
-    full_relative_path = mkrecursivedirs(path[:len(path)-1], upload_dir)
+    full_absolute_path = mkrecursivedirs(path[:len(path)-1], upload_dir)
 
-    full_relative_path = os.path.join(full_relative_path, path[-1])
+    full_absolute_path = os.path.join(full_absolute_path, path[-1])
 
-    file.save(full_relative_path)
+    file.save(full_absolute_path)
 
 
 def delete_file(filename, upload_dir):
-    full_relative_path = os.path.join(upload_dir, filename)
+    full_absolute_path = os.path.join(basedir, upload_dir, filename)
 
-    if not os.path.exists(full_relative_path):
+    if not os.path.exists(full_absolute_path):
         raise Exception('Файл не найден')
     
-    if os.path.isdir(full_relative_path):
-        os.rmdir(full_relative_path)
+    if os.path.isdir(full_absolute_path):
+        os.rmdir(full_absolute_path)
     else:
-        os.remove(full_relative_path)
+        os.remove(full_absolute_path)
 
 
 def isdir(filename, upload_dir):
-    full_relative_path = os.path.join(upload_dir, filename)
-    return os.path.isdir(full_relative_path)
+    full_absolute_path = os.path.join(basedir, upload_dir, filename)
+    return os.path.isdir(full_absolute_path)
 
 
 def exists(filename, upload_dir):
-    full_relative_path = os.path.join(upload_dir, filename)
-    return os.path.exists(full_relative_path)
+    full_absolute_path = os.path.join(basedir, upload_dir, filename)
+    return os.path.exists(full_absolute_path)
 
 
 def listdir(filename, upload_dir):
-    full_relative_path = os.path.join(upload_dir, filename)
+    full_absolute_path = os.path.join(basedir, upload_dir, filename)
 
-    if not os.path.exists(full_relative_path):
+    if not os.path.exists(full_absolute_path):
         raise Exception('Папка или файл не найдены')
-    if not os.path.isdir(full_relative_path):
+    if not os.path.isdir(full_absolute_path):
         raise Exception('Не является папкой')
     
-    return os.listdir(full_relative_path)
+    return os.listdir(full_absolute_path)
