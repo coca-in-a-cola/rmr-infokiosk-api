@@ -15,6 +15,7 @@ flask-sqlalchemy = "*"
 requests = {extras = ["socks"], version = "*"}
 flask-cors = "*"
 flask-migrate = "*"
+flask-statistics = "*"
 
 [dev-packages]
 

@@ -18,10 +18,10 @@ from api.model.declarative_base import db
 from flask_cors import CORS
 import sys
 from flask_migrate import Migrate
+from flask_statistics import Statistics
 import asyncio
 
 migrate = Migrate()
-
 
 def create_app():
     app = Flask(__name__)
@@ -47,6 +47,12 @@ def create_app():
     app.db = db
 
     migrate.init_app(app, db)
+
+    # Подключаем статистику
+    from api.model.request import Request
+    from api.middleware.disable_request_stats import disable_request_stats
+
+    statistics = Statistics(app, db, Request, disable_f=disable_request_stats)
 
 
     # user_db.create_all(app=app)
@@ -79,11 +85,15 @@ if __name__ == '__main__':
     #db.create_all()
 
     if (args.drop_db or args.create_db):
+        # Функционал по удалению всех таблиц пока что не нужен.
         @app.before_first_request
         def create_tables():
-            if (args.drop_db):
-                db.drop_all()
-            db.create_all()
+            from api.model.request import Request
+            #if (args.drop_db):
+            #    db.drop_all()
+            #db.create_all()
+            Request.query.delete()
+
     
 
         
