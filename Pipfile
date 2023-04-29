@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = {extras = ["async"], version = "*"}
 argparse = "*"
 marshmallow = "*"
 natsort = "*"
@@ -16,6 +15,7 @@ requests = {extras = ["socks"], version = "*"}
 flask-cors = "*"
 flask-migrate = "*"
 flask-statistics = "*"
+flask = "==2.2"
 
 [dev-packages]
 

@@ -65,8 +65,8 @@ def get_args():
     parser.add_argument('-p', '--port', default=5000, type=int, help='Порт, на котором будет работать приложение')
     parser.add_argument('-b', '--production', default=False, action='store_true', help='Отметьте, если сервер работает в боевом режиме')
     parser.add_argument('-g', '--gsm', default=False, action='store_true', help='Отметьте, чтобы включить использование GSM')
-    parser.add_argument('-d', '--drop_db', default=False, action='store_true', help='ОПАСНО! Форматирует базу данных. Рекомендуется делать при первом запуске')
-    parser.add_argument('-c', '--create_db', default=False, action='store_true', help='Создаёт структуру таблиц (Не форматирует существующие поля)')
+    parser.add_argument('-d', '--drop_stats', default=False, action='store_true', help='Сбрасывает статистику использования приложения (после первого обращения)')
+    parser.add_argument('-c', '--create_tables', default=False, action='store_true', help='ОПАСНО! Форматирует базу данных. (после первого обращения)')
     parser.add_argument('-S', '--proxy_server', type=str, help='Настройки прокси-сервера, например: socks5://user:pass@host:port')
     args = parser.parse_args()
     return args
@@ -84,15 +84,16 @@ if __name__ == '__main__':
     #app.config.fromfile([app_config, app_secrets])
     #db.create_all()
 
-    if (args.drop_db or args.create_db):
-        # Функционал по удалению всех таблиц пока что не нужен.
+    if (args.drop_stats or args.create_tables):
         @app.before_first_request
         def create_tables():
-            from api.model.request import Request
-            #if (args.drop_db):
-            #    db.drop_all()
-            #db.create_all()
-            Request.query.delete()
+            if (args.drop_stats):
+                from api.model.request import Request
+                Request.query.delete()
+
+            if (args.create_tables):
+                db.drop_all()
+                db.create_all()
 
     
 
